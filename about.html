@@ -11,6 +11,73 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
     />
+    <style>
+      /* ===== ABOUT PAGE TEAM SECTION ===== */
+      .about-container {
+        text-align: center;
+        padding: 50px 20px;
+        color: white;
+      }
+
+      .about-container h1 {
+        font-size: 3rem;
+        color: #d4af37;
+        font-weight: 800;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+      }
+
+      .about-container p {
+        font-size: 1.2rem;
+        color: #ccc;
+        margin-bottom: 50px;
+      }
+
+      /* Team Section Grid (Brick Layout) */
+      .team-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* max 3 per row */
+        gap: 30px;
+        justify-items: center;
+        padding: 20px 0;
+      }
+
+      /* Team Member Cards */
+      .team-member {
+        background-color: #111;
+        border-radius: 15px;
+        padding: 25px 20px;
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.06);
+        transition: transform 0.3s ease;
+      }
+
+      .team-member:hover {
+        transform: translateY(-6px);
+      }
+
+      /* Profile Picture */
+      .team-member .member-photo {
+        width: 140px;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 15px;
+        margin-bottom: 15px;
+      }
+
+      .team-member h2 {
+        color: #d4af37;
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+      }
+
+      .team-member p {
+        color: #bbb;
+        font-size: 1rem;
+      }
+    </style>
   </head>
   <body>
     <header class="about-header">
@@ -30,11 +97,42 @@
       <div class="about-container">
         <h1>Our Team Members</h1>
         <p>Meet the passionate individuals behind <strong>SPES AURUM</strong>.</p>
+
         <div class="team-section">
           <div class="team-member">
-            <img src="https://via.placeholder.com/300x300" alt="Team Member" />
-            <h2>John Doe</h2>
-            <p>Founder & Visionary</p>
+            <img src="home-images/pp.jpg" alt="Ethan Koo" class="member-photo" />
+            <h2>Ethan Koo</h2>
+            <p>CEO</p>
+          </div>
+
+          <div class="team-member">
+            <img src="home-images/pp.jpg" alt="Jaden Ong" class="member-photo" />
+            <h2>Jaden Ong</h2>
+            <p>CDO</p>
+          </div>
+
+          <div class="team-member">
+            <img src="home-images/pp.jpg" alt="Areeca Lim" class="member-photo" />
+            <h2>Areeca Lim</h2>
+            <p>CFO</p>
+          </div>
+
+          <div class="team-member">
+            <img src="home-images/pp.jpg" alt="Orelia Lim" class="member-photo" />
+            <h2>Orelia Lim</h2>
+            <p>CMO</p>
+          </div>
+
+          <div class="team-member">
+            <img src="home-images/pp.jpg" alt="Chloe Yap" class="member-photo" />
+            <h2>Chloe Yap</h2>
+            <p>CMO</p>
+          </div>
+
+          <div class="team-member">
+            <img src="home-images/pp.jpg" alt="Oliver Mangan" class="member-photo" />
+            <h2>Oliver Mangan</h2>
+            <p>CKO</p>
           </div>
         </div>
       </div>
