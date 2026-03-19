@@ -1,0 +1,250 @@
+/* =========================
+   Base + Reset
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Times New Roman", Times, serif;
+}
+
+body {
+  min-height: 100vh;
+  background: url('bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #eee;
+  line-height: 1.6;
+  position: relative;
+}
+
+/* Add full-screen dark blur overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(28,28,28,0.75); /* dark overlay */
+  backdrop-filter: blur(6px);
+  z-index: -1;
+}
+
+/* =========================
+   Top Bar
+========================= */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(28,28,28,0.95);
+  border-bottom: 1px solid #daab5c;
+  padding: 15px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.top-bar h1 {
+  color: #daab5c;
+  font-weight: bold;
+}
+
+.top-right-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-btn {
+  text-decoration: none;
+  color: #daab5c;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+
+.nav-btn:hover {
+  background-color: rgba(218, 171, 92, 0.2);
+}
+
+#top-right {
+  color: #daab5c;
+  margin-left: 10px;
+  font-weight: normal;
+}
+
+#auth-buttons button {
+  background-color: #daab5c;
+  color: #1c1c1c;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#auth-buttons button:hover {
+  background-color: #b9934b;
+}
+
+/* =========================
+   New Post / Toggle
+========================= */
+.new-post-toggle,
+.new-post {
+  background: rgba(28,28,28,0.85);
+  border: 1px solid #daab5c;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+.new-post-toggle button,
+.new-post button {
+  background-color: #daab5c;
+  color: #1c1c1c;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.new-post-toggle button:hover,
+.new-post button:hover {
+  background-color: #b9934b;
+}
+
+.new-post input,
+.new-post textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #daab5c;
+  border-radius: 4px;
+  background-color: rgba(28,28,28,0.9);
+  color: #eee;
+  resize: vertical;
+}
+
+/* =========================
+   Posts List
+========================= */
+.posts-list .post {
+  background: rgba(28,28,28,0.85);
+  border: 1px solid #daab5c;
+  border-radius: 8px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.posts-list .post h3 {
+  font-size: 1.5rem;
+  color: #daab5c;
+  margin-bottom: 8px;
+}
+
+.posts-list .post p {
+  font-size: 0.95rem;
+  color: #eee;
+  max-height: 2.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.posts-list .post .post-meta {
+  font-size: 0.8rem;
+  color: #daab5c;
+  margin-bottom: 8px;
+}
+
+.posts-list .post button {
+  margin-top: 10px;
+  margin-right: 10px;
+  background-color: #daab5c;
+  color: #1c1c1c;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.posts-list .post button:hover {
+  background-color: #b9934b;
+}
+
+/* =========================
+   Single Post + Comments
+========================= */
+.single-post {
+  background: rgba(28,28,28,0.85);
+  border: 1px solid #daab5c;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.single-post h2 {
+  font-size: 2rem;
+  color: #daab5c;
+  margin-bottom: 15px;
+}
+
+.single-post p {
+  font-size: 1rem;
+  color: #eee;
+  margin-bottom: 10px;
+}
+
+.comments div {
+  border-top: 1px solid #daab5c;
+  padding: 8px 0;
+  position: relative;
+}
+
+.comments div p {
+  color: #eee;
+}
+
+.comments div small {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  color: #daab5c;
+  font-size: 0.8rem;
+}
+
+/* =========================
+   Hidden helper
+========================= */
+.hidden {
+  display: none;
+}
+/* Top bar right container */
+.top-right-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;       /* space between username and buttons */
+}
+
+/* Logout button in top bar */
+#logout-btn {
+  background-color: #daab5c;
+  color: #1c1c1c;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#logout-btn:hover {
+  background-color: #b9934b;
+}

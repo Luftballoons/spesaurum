@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SPES AURUM - Register</title>
+  <link rel="stylesheet" href="authstyle.css">
+</head>
+<body>
+
+  <div class="auth-container">
+    <h2>Register</h2>
+    <input type="text" id="displayName" placeholder="Display Name">
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="register()">Register</button>
+    <a href="login.html" class="auth-link">Already have an account? Login</a>
+  </div>
+
+  <script type="module" src="app.js"></script>
+  <script>
+    // Redirect logged-in users away from register page
+    import { auth } from './app.js';
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+    onAuthStateChanged(auth, user => {
+      if(user) {
+        window.location.href = "index.html"; // already logged in
+      }
+    });
+  </script>
+</body>
+</html>

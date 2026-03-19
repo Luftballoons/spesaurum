@@ -1,0 +1,94 @@
+/* =========================
+   Base + Reset
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Times New Roman", Times, serif;
+}
+
+body {
+  min-height: 100vh;
+  background: url('bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Dark blur overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(28,28,28,0.75);
+  backdrop-filter: blur(6px);
+  z-index: -1;
+}
+
+/* =========================
+   Form Container
+========================= */
+.auth-container {
+  background: rgba(28,28,28,0.85);
+  border: 1px solid #daab5c;
+  border-radius: 10px;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* Headings */
+.auth-container h2 {
+  color: #daab5c;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* Inputs */
+.auth-container input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #daab5c;
+  border-radius: 5px;
+  background-color: rgba(28,28,28,0.9);
+  color: #eee;
+  font-size: 1rem;
+}
+
+/* Buttons */
+.auth-container button {
+  width: 100%;
+  background-color: #daab5c;
+  color: #1c1c1c;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.auth-container button:hover {
+  background-color: #b9934b;
+}
+
+/* Links */
+.auth-container .auth-link {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+  color: #daab5c;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.auth-container .auth-link:hover {
+  text-decoration: underline;
+}

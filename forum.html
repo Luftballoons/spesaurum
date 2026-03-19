@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SPES AURUM - Forum</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Top Navbar -->
+<header class="top-bar">
+  <h1>SPES AURUM</h1>
+  <nav class="top-right-container">
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="forum.html" class="nav-btn">Forum</a>
+    <a href="contact.html" class="nav-btn">Contact</a>
+    <span id="top-right">Not logged in</span>
+    <div id="auth-buttons"></div>
+  </nav>
+</header>
+
+<!-- Forum Section -->
+<section class="forum-section">
+  <h2>---Forum---</h2>
+
+  <!-- New Post Toggle -->
+  <div class="new-post-toggle">
+    <button onclick="toggleNewPost()">Create New Post</button>
+  </div>
+
+  <!-- New Post Form -->
+  <div class="new-post hidden">
+    <input type="text" id="title" placeholder="Post Title">
+    <textarea id="content" placeholder="Write your post..."></textarea>
+    <button onclick="createPost()">Post</button>
+  </div>
+
+  <!-- Posts List -->
+  <div id="posts" class="posts-list">
+    <!-- Posts loaded dynamically by app.js -->
+  </div>
+</section>
+
+<script type="module" src="app.js"></script>
+<script>
+  function toggleNewPost() {
+    const form = document.querySelector('.new-post');
+    form.classList.toggle('hidden');
+  }
+</script>
+</body>
+</html>
