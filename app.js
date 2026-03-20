@@ -4,11 +4,13 @@ console.log("app.js running");
 // Imports
 // =========================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-import { 
-  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut 
+import {
+  getAuth, createUserWithEmailAndPassword,
+  signInWithEmailAndPassword, onAuthStateChanged, signOut
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-import { 
-  getFirestore, collection, addDoc, getDocs, doc, getDoc, deleteDoc, onSnapshot, query, orderBy 
+import {
+  getFirestore, collection, addDoc, getDocs,
+  doc, getDoc, deleteDoc, onSnapshot, query, orderBy
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 // =========================
@@ -28,13 +30,14 @@ const auth = getAuth();
 const db = getFirestore();
 
 // =========================
-// Global User
+// Global user
 // =========================
 let currentUser = null;
 let displayName = null;
 
 onAuthStateChanged(auth, async user => {
   currentUser = user;
+
   const topRight = document.getElementById("top-right");
   const authButtons = document.getElementById("auth-buttons");
   if (!topRight || !authButtons) return;
@@ -42,9 +45,10 @@ onAuthStateChanged(auth, async user => {
   authButtons.innerHTML = "";
 
   if (user) {
-    // get display name
+    // Get display name
     const usersSnapshot = await getDocs(collection(db, "users"));
     displayName = user.email;
+
     usersSnapshot.forEach(u => {
       if (u.data().uid === user.uid) {
         displayName = u.data().displayName || user.email;
@@ -53,16 +57,14 @@ onAuthStateChanged(auth, async user => {
 
     topRight.innerText = displayName;
 
-    // Logout button
     const logoutBtn = document.createElement("button");
     logoutBtn.innerText = "Logout";
-    logoutBtn.onclick = () => {
-      signOut(auth).then(() => window.location.href = "login.html");
-    };
+    logoutBtn.onclick = () => signOut(auth);
     authButtons.appendChild(logoutBtn);
 
   } else {
     topRight.innerText = "Not logged in";
+
     const loginBtn = document.createElement("a");
     loginBtn.href = "login.html";
     loginBtn.innerText = "Login";
@@ -70,49 +72,46 @@ onAuthStateChanged(auth, async user => {
     authButtons.appendChild(loginBtn);
   }
 
-  loadPosts(); // refresh posts with correct delete button
+  loadPosts();
+  loadSinglePost();
 });
 
 // =========================
-// Register
+// Auth
 // =========================
-window.register = function() {
+window.register = async function () {
   const email = document.getElementById("email")?.value;
   const password = document.getElementById("password")?.value;
   const name = document.getElementById("displayName")?.value || "Anonymous";
 
   if (!email || !password) return alert("Enter email/password");
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then(async cred => {
-      await addDoc(collection(db, "users"), {
-        uid: cred.user.uid,
-        email,
-        displayName: name
-      });
-      alert("Registered!");
-      window.location.href = "login.html";
-    })
-    .catch(err => alert(err.message));
+  const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+  await addDoc(collection(db, "users"), {
+    uid: cred.user.uid,
+    email,
+    displayName: name
+  });
+
+  alert("Registered!");
+  window.location.href = "login.html";
 };
 
-// =========================
-// Login
-// =========================
-window.login = function() {
+window.login = async function () {
   const email = document.getElementById("email")?.value;
   const password = document.getElementById("password")?.value;
+
   if (!email || !password) return alert("Enter email/password");
 
-  signInWithEmailAndPassword(auth, email, password)
-    .then(() => window.location.href = "index.html")
-    .catch(err => alert(err.message));
+  await signInWithEmailAndPassword(auth, email, password);
+  window.location.href = "index.html";
 };
 
 // =========================
 // Create Post
 // =========================
-window.createPost = async function() {
+window.createPost = async function () {
   if (!currentUser) return alert("Login first");
 
   const title = document.getElementById("title")?.value;
@@ -125,17 +124,15 @@ window.createPost = async function() {
     content,
     userId: currentUser.uid,
     userEmail: currentUser.email,
-    displayName: displayName,
+    displayName,
     createdAt: Date.now()
   });
 
   alert("Posted!");
-  document.getElementById("title").value = "";
-  document.getElementById("content").value = "";
 };
 
 // =========================
-// Load Posts
+// Load Posts (forum)
 // =========================
 function loadPosts() {
   const postsDiv = document.getElementById("posts");
@@ -145,6 +142,7 @@ function loadPosts() {
 
   onSnapshot(postsQuery, snapshot => {
     postsDiv.innerHTML = "";
+
     snapshot.forEach(docSnap => {
       const post = docSnap.data();
       const isAuthor = currentUser && post.userId === currentUser.uid;
@@ -152,11 +150,11 @@ function loadPosts() {
       postsDiv.innerHTML += `
         <div class="post">
           <div class="post-meta">
-            Posted by ${post.displayName || post.userEmail} at ${new Date(post.createdAt).toLocaleString()}
+            ${post.displayName || post.userEmail} • ${new Date(post.createdAt).toLocaleString()}
           </div>
           <h3>${post.title}</h3>
           <p>${post.content}</p>
-          <button onclick="window.location.href='post.html?id=${docSnap.id}'">View</button>
+          <button onclick="location.href='post.html?id=${docSnap.id}'">View</button>
           ${isAuthor ? `<button onclick="deletePost('${docSnap.id}')">Delete</button>` : ""}
         </div>
       `;
@@ -165,12 +163,131 @@ function loadPosts() {
 }
 
 // =========================
+// Load Single Post
+// =========================
+function loadSinglePost() {
+  const titleEl = document.getElementById("post-title");
+  if (!titleEl) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const postId = params.get("id");
+
+  if (!postId) {
+    titleEl.innerText = "No post ID.";
+    return;
+  }
+
+  const docRef = doc(db, "posts", postId);
+
+  onSnapshot(docRef, docSnap => {
+    if (!docSnap.exists()) {
+      titleEl.innerText = "Post not found";
+      return;
+    }
+
+    const post = docSnap.data();
+
+    document.getElementById("post-title").innerText = post.title;
+    document.getElementById("post-content").innerText = post.content;
+    document.getElementById("post-meta").innerText =
+      `${post.displayName || post.userEmail} • ${new Date(post.createdAt).toLocaleString()}`;
+
+    loadComments(postId);
+  });
+}
+
+// =========================
+// Comments
+// =========================
+function loadComments(postId) {
+  const commentsDiv = document.getElementById("comments");
+  if (!commentsDiv) return;
+
+  const q = query(
+    collection(db, "posts", postId, "comments"),
+    orderBy("createdAt", "asc")
+  );
+
+  onSnapshot(q, snapshot => {
+    commentsDiv.innerHTML = "";
+
+    snapshot.forEach(doc => {
+      const c = doc.data();
+
+      commentsDiv.innerHTML += `
+        <div class="comment">
+          <b>${c.displayName || c.userEmail}</b>
+          <p>${c.text}</p>
+        </div>
+      `;
+    });
+  });
+}
+
+window.addComment = async function () {
+  if (!currentUser) return alert("Login first");
+
+  const input = document.getElementById("comment-input");
+  const text = input.value;
+
+  if (!text) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const postId = params.get("id");
+
+  await addDoc(collection(db, "posts", postId, "comments"), {
+    text,
+    userId: currentUser.uid,
+    userEmail: currentUser.email,
+    displayName,
+    createdAt: Date.now()
+  });
+
+  input.value = "";
+};
+
+// =========================
 // Delete Post
 // =========================
-window.deletePost = async function(postId) {
-  if (!currentUser) return alert("Not authorized");
-  const confirmDelete = confirm("Delete this post?");
-  if (!confirmDelete) return;
+window.deletePost = async function (postId) {
+  if (!currentUser) return;
+
+  if (!confirm("Delete post?")) return;
 
   await deleteDoc(doc(db, "posts", postId));
 };
+// Background images
+const images = ['bg2.jpg','bg7.jpg','bg3.jpg','bg4.jpg','bg5.jpg','bg6.jpg']
+let current = 0;
+const bgDiv = document.querySelector('.hero-bg');
+
+// -------- Image cycling --------
+function cycleBackground() {
+  bgDiv.style.backgroundImage = `url('${images[current]}')`;
+  bgDiv.style.opacity = 1;
+
+  setTimeout(() => {
+    bgDiv.style.opacity = 0;
+  }, 4000); // visible 4s
+
+  current = (current + 1) % images.length;
+}
+cycleBackground();
+setInterval(cycleBackground, 5000);
+
+// -------- Smooth parallax --------
+let targetY = 0;
+let currentY = 0;
+
+function animateParallax() {
+  // target is 30% of scroll for subtle effect
+  targetY = window.scrollY * 0.3;
+
+  // lerp: smooth interpolation
+  currentY += (targetY - currentY) * 0.08; // 0.08 = smoothing factor
+  bgDiv.style.transform = `translateY(${currentY}px)`;
+
+  requestAnimationFrame(animateParallax);
+}
+
+animateParallax(); // start loop

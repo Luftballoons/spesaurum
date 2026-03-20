@@ -6,30 +6,36 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<!-- Top Navbar -->
 <header class="top-bar">
   <h1>SPES AURUM</h1>
-
-  <div class="top-right-container">
-    <span id="top-right">Not logged in</span>
+  <nav class="top-right-container">
+    <a href="index.html" class="nav-btn">Home</a>
+    <a href="forum.html" class="nav-btn">Forum</a>
+    <a href="contact.html" class="nav-btn">Contact</a>
+    <span id="top-right">Not logged in.</span>
     <div id="auth-buttons"></div>
-  </div>
+  </nav>
 </header>
 
+<!-- Single Post -->
 <section class="single-post">
   <h2 id="post-title">Loading...</h2>
   <div id="post-meta"></div>
   <p id="post-content"></p>
 </section>
 
+<!-- Comments -->
 <section class="comments">
   <h3>Comments</h3>
+
   <div class="new-comment-form">
     <textarea id="comment-input" placeholder="Add a comment..."></textarea>
     <button onclick="addComment()">Post Comment</button>
   </div>
-  <div id="comments">
-    <!-- comments loaded here -->
-  </div>
+
+  <div id="comments"></div>
 </section>
 
 <script type="module" src="app.js"></script>
