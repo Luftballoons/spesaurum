@@ -17,13 +17,21 @@ import {
 // Firebase config
 // =========================
 const firebaseConfig = {
+
   apiKey: "AIzaSyBtyzPBgTyiff9ZpQR45tREKYaa6D1-K7U",
+
   authDomain: "spesaurum.firebaseapp.com",
+
   projectId: "spesaurum",
+
   storageBucket: "spesaurum.firebasestorage.app",
+
   messagingSenderId: "5666077206",
+
   appId: "1:5666077206:web:b847a0caf51e401b3f9337"
+
 };
+
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -79,33 +87,69 @@ onAuthStateChanged(auth, async user => {
 // =========================
 // Auth
 // =========================
-window.register = async function () {
-  const email = document.getElementById("email")?.value;
-  const password = document.getElementById("password")?.value;
-  const name = document.getElementById("displayName")?.value || "Anonymous";
+// Make sure you import these in your HTML:
+// <script type="module">
+//   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+//   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+//   import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+// </script>
 
-  if (!email || !password) return alert("Enter email/password");
-
-  const cred = await createUserWithEmailAndPassword(auth, email, password);
-
-  await addDoc(collection(db, "users"), {
-    uid: cred.user.uid,
-    email,
-    displayName: name
-  });
-
-  alert("Registered!");
-  window.location.href = "login.html";
+// 1. Initialize Firebase
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "your-project-id.firebaseapp.com",
+  projectId: "your-project-id",
+  storageBucket: "your-project-id.appspot.com",
+  messagingSenderId: "SENDER_ID",
+  appId: "APP_ID"
 };
 
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// 2. Register function
+window.register = async function () {
+  try {
+    const email = document.getElementById("email")?.value;
+    const password = document.getElementById("password")?.value;
+    const name = document.getElementById("displayName")?.value || "Anonymous";
+
+    if (!email || !password) return alert("Enter email/password");
+
+    // Create user
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+    // Add to Firestore
+    await addDoc(collection(db, "users"), {
+      uid: cred.user.uid,
+      email,
+      displayName: name
+    });
+
+    alert("Registered!");
+    window.location.href = "login.html";
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+};
+
+// 3. Login function
 window.login = async function () {
-  const email = document.getElementById("email")?.value;
-  const password = document.getElementById("password")?.value;
+  try {
+    const email = document.getElementById("email")?.value;
+    const password = document.getElementById("password")?.value;
 
-  if (!email || !password) return alert("Enter email/password");
+    if (!email || !password) return alert("Enter email/password");
 
-  await signInWithEmailAndPassword(auth, email, password);
-  window.location.href = "index.html";
+    await signInWithEmailAndPassword(auth, email, password);
+
+    window.location.href = "index.html";
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
 };
 
 // =========================
